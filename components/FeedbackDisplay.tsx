@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import { SparklesIcon } from './icons';
 
 interface FeedbackDisplayProps {
@@ -28,16 +29,15 @@ export const FormattedFeedback: React.FC<{ text: string }> = ({ text }) => {
     const html = useMemo(() => {
         if (!text) return '';
         try {
-            // 本番アプリケーションでは、XSS攻撃を防ぐために
-            // DOMPurifyのようなライブラリでHTMLをサニタイズすることが重要です。
-            return marked.parse(text) as string;
+            const rawHtml = marked.parse(text) as string;
+            // XSS攻撃を防ぐためにHTMLをサニタイズ
+            return DOMPurify.sanitize(rawHtml);
         } catch (e) {
             console.error("Markdown parsing failed", e);
             return `<h3>フィードバックの表示エラー</h3><p>Markdownの解析中にエラーが発生しました。</p>`;
         }
     }, [text]);
 
-    // 親要素がproseクラスを持つため、このコンポーネントはHTMLを直接レンダリングするだけ
     return <div dangerouslySetInnerHTML={{ __html: html }} />;
 };
 

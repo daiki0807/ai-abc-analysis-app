@@ -2,11 +2,12 @@
   "name": "ai-abc-analysis-app",
   "version": "1.1.0",
   "private": true,
+  "type": "module",
   "description": "An application to assist educators in conducting ABC analysis of student behavior, with AI-powered feedback to improve intervention strategies.",
   "scripts": {
-    "build": "esbuild index.tsx --bundle --outfile=dist/index.js --format=esm --jsx=automatic --define:process.env.API_KEY='\"$API_KEY\"' --external:react --external:react-dom --external:@google/genai --external:marked --external:jspdf --external:html2canvas && cp index.html dist/ && sed -i 's/src=\".\\/index.tsx\"/src=\".\\/index.js\"/' dist/index.html"
+    "build": "node build.mjs"
   },
   "devDependencies": {
-    "esbuild": "^0.23.1"
+    "esbuild": "^0.23.0"
   }
 }
