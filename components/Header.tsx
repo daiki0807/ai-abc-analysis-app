@@ -1,6 +1,12 @@
-import React from 'react';
 
-const Header: React.FC = () => {
+import React from 'react';
+import { LogoutIcon } from './icons';
+
+interface HeaderProps {
+    onLogout: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onLogout }) => {
   return (
     <header className="bg-white shadow-md sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,6 +19,14 @@ const Header: React.FC = () => {
             </div>
             <h1 className="text-xl font-bold text-slate-900 ml-3">AI ABC分析アシスタント</h1>
           </div>
+          <button
+            onClick={onLogout}
+            className="flex items-center gap-2 px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-slate-600 hover:bg-slate-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors"
+            aria-label="ログアウト"
+          >
+            <LogoutIcon className="w-5 h-5" />
+            <span className="hidden sm:inline">ログアウト</span>
+          </button>
         </div>
       </div>
     </header>

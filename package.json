@@ -1,24 +1,12 @@
 {
-  "name": "ai-abc-analysis-assistant",
+  "name": "ai-abc-analysis-app",
+  "version": "1.1.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "description": "An application to assist educators in conducting ABC analysis of student behavior, with AI-powered feedback to improve intervention strategies.",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react-dom": "^19.1.1",
-    "@google/genai": "^1.13.0",
-    "react": "^19.1.1",
-    "marked": "^13.0.0",
-    "jspdf": "^2.5.1",
-    "html2canvas": "^1.4.1"
+    "build": "esbuild index.tsx --bundle --outfile=dist/index.js --format=esm --jsx=automatic --define:process.env.API_KEY='\"$API_KEY\"' --external:react --external:react-dom --external:@google/genai --external:marked --external:jspdf --external:html2canvas && cp index.html dist/ && sed -i 's/src=\".\\/index.tsx\"/src=\".\\/index.js\"/' dist/index.html"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "esbuild": "^0.23.0"
   }
 }

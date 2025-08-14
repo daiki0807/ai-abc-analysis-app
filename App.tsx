@@ -12,8 +12,16 @@ import { SparklesIcon } from './components/icons';
 import Modal from './components/Modal';
 import LoginScreen from './components/LoginScreen';
 
+const APP_LOGGED_IN_KEY = 'abc-assistant-loggedIn';
+
 const App: React.FC = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+        try {
+            return sessionStorage.getItem(APP_LOGGED_IN_KEY) === 'true';
+        } catch {
+            return false;
+        }
+    });
     const [students, setStudents] = useState<Student[]>(() => {
         try {
             const savedStudents = localStorage.getItem('abc-students');
@@ -52,7 +60,25 @@ const App: React.FC = () => {
     }, [students]);
 
     const handleLoginSuccess = () => {
-        setIsLoggedIn(true);
+        try {
+            sessionStorage.setItem(APP_LOGGED_IN_KEY, 'true');
+            setIsLoggedIn(true);
+        } catch (e) {
+            console.error('Failed to set login status in sessionStorage', e);
+            setIsLoggedIn(true);
+        }
+    };
+    
+    const handleLogout = () => {
+        try {
+            sessionStorage.removeItem(APP_LOGGED_IN_KEY);
+        } catch (e) {
+            console.error('Failed to remove login status from sessionStorage', e);
+        }
+        setIsLoggedIn(false);
+        setSelectedStudentId(null);
+        setViewingAnalysisId(null);
+        handleReset();
     };
 
     const selectedStudent = useMemo(() => {
@@ -194,7 +220,7 @@ const App: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-white font-sans">
-            <Header />
+            <Header onLogout={handleLogout} />
             <main className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
                 <div className="bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
                     <StudentManager
